@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/8d914e955d.js" crossorigin="anonymous"></script>
+    <title>Othello</title>
+</head>
+<body>
+    <div class="contenedor">
+        
+        <div class="tablero " id="tablero_id">  
+            <div class="fila" id="1"><div class="celda" id="A1"></div><div class="celda" id="B1"></div><div class="celda" id="C1"></div></div>
+            <div class="fila" id="2"><div class="celda" id="A2"></div><div class="celda" id="B2"></div><div class="celda" id="C2"></div></div>
+            <div class="fila" id="3"><div class="celda" id="A3"></div><div class="celda" id="B3"></div><div class="celda" id="C3"></div></div>
+        </div>
+        <button id="Peti">Peti</button>
+    </div>
+
+    <div class="infoJugada" id="PierdeTurno">
+        \Jugador\ a perdido turno ya que no tenia ni una jugada posible
+    </div>
+
+    <div id="info" class="info">
+        <div class="primerMenu" id="primerMenu">
+            <span>
+                <h1>TicTacToe</h1>
+                <div class="menu">
+                    <label for="jugador1">JUGADOR</label>
+                    <input type="text" id="jugador1" value="g">
+
+                    <button id="btnCrear" class="btn btn_grande">Crear</button>
+                    <button id="btn_ok" class="btn btn_pequeño"><i class="fas fa-play"></i></button>
+                    <button id="btnUnirse" class="btn btn_grande">Unirse</button>
+                </div>
+                
+            </span>
+        </div>
+
+        <div class="unirseMenu" id="unirseMenu">
+
+            <span>
+                <h1>TicTacToe</h1>
+                <div class="menu">
+                    <label for="partida">Partida</label>
+                    <input type="text" id="partida" value="prueba">
+
+                    <button id="btnUnirseMenu" class="btn btn_grande">Unirse</button>
+                </div>
+                
+            </span>
+
+            
+        </div>
+
+        <div class="crearMenu" id="crearMenu">
+
+            <span>
+                <h1>TicTacToe</h1>
+                <div class="menu">
+                    <label for="partida">Partida</label>
+                    <input type="text" id="partida" value="prueba">
+                    <label for="password">Password</label>
+                    <input type="text" id="password" value="1234">
+                    <button id="btnCrearMenu" class="btn btn_grande">Crear</button>
+                </div>
+                
+            </span>
+
+            
+        </div>
+    </div>
+</body>
+</html>
