@@ -119,10 +119,11 @@ function infoPartida(){
     var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
+                
                 var jsonResponse = JSON.parse(this.responseText);
                 turnoJugador = jsonResponse.player;
                 rellenarTablero(jsonResponse.gameInfo);
+                turno(jsonResponse.player);
             }
         };
         xhttp.open("POST", "https://tictactoe.codifi.cat/", true);
@@ -140,5 +141,24 @@ function rellenarTablero(arrayGame){
 }
 
 function alertaError(mensaje){
-    alert(mensaje);
+    document.getElementById("tablero_id").style.boxShadow = "0 0px 20px 10px red"
+    setTimeout(function() {document.getElementById("tablero_id").style.boxShadow = "0 0px 20px 10px black";}, 150);
+    setTimeout(function() {document.getElementById("tablero_id").style.boxShadow = "0 0px 20px 10px red";}, 300);
+    setTimeout(function() {document.getElementById("tablero_id").style.boxShadow = "0 0px 20px 10px black";}, 450);
+        
+    return; 
+}
+
+function turno(turnoJugada){
+    if(jugador == turnoJugada){
+        document.getElementById("Turno").style = 'background-color: green';
+        document.getElementById("Turno").textContent = "TU TURNO";
+    }else if(turnoJugada == ""){
+        document.getElementById("Turno").style = 'background-color: orange';
+    }else{
+        document.getElementById("Turno").style = 'background-color: red';
+        document.getElementById("Turno").textContent = "TURNO DEL ENEMIGO";
+    }
+    
+ 
 }
