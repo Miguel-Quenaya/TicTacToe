@@ -3,6 +3,8 @@ window.onload = seleccion;
 function seleccion(){
     document.getElementById("info").style = 'display:block';
     document.getElementById("primerMenu").style = 'display:block';
+    document.getElementById("crearMenu").style = 'display:none';
+    document.getElementById("unirseMenu").style = 'display:none';
     //AddEventListener a los botones de inicar partida. Llama a la funcion para obtener los valores
     document.getElementById("btnCrear").addEventListener("click", obtener_valores, false);
     document.getElementById("btnUnirse").addEventListener("click", obtener_valores, false);
@@ -28,6 +30,7 @@ function unirsePartidaMenu(){
 
     
     document.getElementById("btnUnirseMenu").addEventListener("click", unirsePartida, false);
+    document.getElementById("btnVolver").addEventListener("click", seleccion, false);
 }
 
 function unirsePartida(){
@@ -45,6 +48,7 @@ function crearPartidaMenu(){
     document.getElementById("crearMenu").style = 'display:block';
     document.getElementById("btnCrear").removeEventListener("click", obtener_valores, false);
     document.getElementById("btnCrearMenu").addEventListener("click", crearPartida, false);
+    document.getElementById("btnVolver2").addEventListener("click", seleccion, false);
 }
 
 function crearPartida(){
