@@ -11,7 +11,6 @@ function seleccion(){
 }
 
 function obtener_valores(){
-    //Obtenemos los nombres de cada jugador
     accion = this.id;
 
     if(accion == "btnUnirse"){
@@ -21,8 +20,6 @@ function obtener_valores(){
     }
 
 }
-
-
 
 function unirsePartidaMenu(){
     document.getElementById("primerMenu").style = 'display:none';
@@ -57,8 +54,6 @@ function crearPartida(){
     nombrePartida = document.getElementById("partida").value;
     passwordPartida = document.getElementById("password").value;
 
-    //console.log(nombrePartida + "  " + passwordPartida);
-
     var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -89,8 +84,6 @@ function generarEscuchas(){
     for(var celda of celdas){
         celda.addEventListener("click", jugada, false);
     }
-
-    //document.getElementById("Peti").addEventListener("click", infoPartida, false);
 }
 
 function jugada(){
@@ -113,11 +106,9 @@ function infoPartida(){
     var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                
                 var jsonResponse = JSON.parse(this.responseText);
                 turnoJugador = jsonResponse.player;
                 rellenarTablero(jsonResponse.gameInfo);
-                
                 turno(jsonResponse.player);
             }
         };
@@ -152,12 +143,19 @@ function comprobarFinPartida(arrayGame){
     }else if((arrayGame['A3'] == arrayGame['B2']) && (arrayGame['B2'] == arrayGame['C1']) && (arrayGame['A3'] != "")){
         clearInterval(intervalID);
         finPartida(arrayGame['A3']);
+    }else if((arrayGame['A1'] != "") &&(arrayGame['A2'] != "") &&(arrayGame['A3'] != "") &&(arrayGame['B1'] != "") &&(arrayGame['B2'] != "") &&(arrayGame['B3'] != "") &&(arrayGame['C1'] != "") &&(arrayGame['C2'] != "") &&(arrayGame['C3'] != "") ){
+        clearInterval(intervalID);
+        finPartida("");
     }
 }
 
 function finPartida(ganador){
+    if(ganador == ""){
+        document.getElementById('ganadorH2').innerHTML = "EMPATE";
+    }else{
+        document.getElementById('ganadorH2').innerHTML = "HA GANADO " + ganador;
+    }
     
-    document.getElementById('ganadorH2').innerHTML = "HA GANADO " + ganador;
     document.getElementById("unirseMenu").style = 'display:none';
     document.getElementById("crearMenu").style = 'display:none';
 
