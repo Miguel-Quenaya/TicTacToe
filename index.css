@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(255, 251, 194);
 }
 img{
     width: 100%;
@@ -9,7 +9,10 @@ img{
     flex-direction: row;
 }
 
-
+#mensajes{
+    color: red;
+    
+}
 .tablero{
     background-color: rgb(255, 255, 255);
     width: 40vw;

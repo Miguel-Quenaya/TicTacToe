@@ -2,7 +2,7 @@ window.onload = seleccion;
 
 function seleccion(){
     document.getElementById("info").style = 'display:block';
-
+    document.getElementById("primerMenu").style = 'display:block';
     //AddEventListener a los botones de inicar partida. Llama a la funcion para obtener los valores
     document.getElementById("btnCrear").addEventListener("click", obtener_valores, false);
     document.getElementById("btnUnirse").addEventListener("click", obtener_valores, false);
@@ -11,35 +11,16 @@ function seleccion(){
 function obtener_valores(){
     //Obtenemos los nombres de cada jugador
     accion = this.id;
-    nombre_jugador_1 = document.getElementById("jugador1").value;
-    
-    validar_valores();
-}
 
-function validar_valores(){
-    //Si no a rellenado un campo se lo indicamos visualmente
-    if(nombre_jugador_1 == ""){
-        document.getElementById("jugador1").value = nombre_jugador_1;
-
-        if(nombre_jugador_1 == ""){
-            document.getElementById("jugador1").style = "background-color: rgba(238, 164, 164, 0.945)";
-        }else{
-            document.getElementById("jugador1").style = "background-color: rgba(209, 248, 200, 0.719)";
-        }
-        
-        //Volvemos a llamar la funcion de "Seleccion" 
-        seleccion()
+    if(accion == "btnUnirse"){
+        unirsePartidaMenu();
     }else{
-        //Al tener los 2 nombres escondemos el formulario y generamos el tablero
-        //document.getElementById("info").style = 'display:none';
-        if(accion == "btnUnirse"){
-            unirsePartidaMenu();
-        }else{
-            crearPartidaMenu();
-        }
+        crearPartidaMenu();
     }
-    
+
 }
+
+
 
 function unirsePartidaMenu(){
     document.getElementById("primerMenu").style = 'display:none';
@@ -54,7 +35,7 @@ function unirsePartida(){
     document.getElementById("info").style = 'diplay:none';
     nombrePartida = document.getElementById("partida").value;
     jugador ="O";
-    setInterval(infoPartida,500);
+    intervalID = setInterval(infoPartida,500);
     generarEscuchas();
 }
 
@@ -68,7 +49,7 @@ function crearPartidaMenu(){
 
 function crearPartida(){
     
-    document.getElementById("info").style = 'diplay:none';
+    document.getElementById("info").style = 'display:none';
     nombrePartida = document.getElementById("partida").value;
     passwordPartida = document.getElementById("password").value;
 
@@ -77,15 +58,24 @@ function crearPartida(){
     var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 jugador = "X";
+
+                if(JSON.parse(this.responseText).status == "KO"){
+                    document.getElementById('mensajes').innerHTML = "Contraseña incorrecta";
+                    document.getElementById("info").style = 'display:block';
+                    crearPartidaMenu();
+                }else{
+                    intervalID = setInterval(infoPartida,500);
+            generarEscuchas();
+                }
+                
             }
         };
         xhttp.open("POST", "https://tictactoe.codifi.cat/", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send('{"action": "createGame","gameName": "' + nombrePartida + '","gamePassword": "' + passwordPartida + '"}');
-        setInterval(infoPartida,500);
-    generarEscuchas();
+        
+        
 }
 
 function generarEscuchas(){
@@ -96,7 +86,7 @@ function generarEscuchas(){
         celda.addEventListener("click", jugada, false);
     }
 
-    document.getElementById("Peti").addEventListener("click", infoPartida, false);
+    //document.getElementById("Peti").addEventListener("click", infoPartida, false);
 }
 
 function jugada(){
@@ -123,6 +113,7 @@ function infoPartida(){
                 var jsonResponse = JSON.parse(this.responseText);
                 turnoJugador = jsonResponse.player;
                 rellenarTablero(jsonResponse.gameInfo);
+                
                 turno(jsonResponse.player);
             }
         };
@@ -131,13 +122,55 @@ function infoPartida(){
         xhttp.send('{"action": "infoGame","gameName": "' + nombrePartida + '"}');
 }
 
+function comprobarFinPartida(arrayGame){
+    console.log("A1:" + arrayGame['A1'] + "  A2:" + arrayGame['A2'] + "  A3:" + arrayGame['A3']);
+    if((arrayGame['A1'] == arrayGame['A2']) && (arrayGame['A2'] == arrayGame['A3']) && (arrayGame['A2'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['A1']);
+    }else if((arrayGame['B1'] == arrayGame['B2']) && (arrayGame['B2'] == arrayGame['B3']) && (arrayGame['B2'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['B1']);
+    }else if((arrayGame['C1'] == arrayGame['C2']) && (arrayGame['C2'] == arrayGame['C3']) && (arrayGame['C2'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['C1']);
+    }else if((arrayGame['A1'] == arrayGame['B1']) && (arrayGame['B1'] == arrayGame['C1']) && (arrayGame['A1'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['A1']);
+    }else if((arrayGame['A2'] == arrayGame['B2']) && (arrayGame['B2'] == arrayGame['C2']) && (arrayGame['A2'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['A2']);
+    }else if((arrayGame['A3'] == arrayGame['B3']) && (arrayGame['B3'] == arrayGame['C3']) && (arrayGame['A3'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['A3']);
+    }else if((arrayGame['A1'] == arrayGame['B2']) && (arrayGame['B2'] == arrayGame['C3']) && (arrayGame['A1'] != "")){ 
+        clearInterval(intervalID);
+        finPartida(arrayGame['A1']);
+    }else if((arrayGame['A3'] == arrayGame['B2']) && (arrayGame['B2'] == arrayGame['C1']) && (arrayGame['A3'] != "")){
+        clearInterval(intervalID);
+        finPartida(arrayGame['A3']);
+    }
+}
+
+function finPartida(ganador){
+    
+    document.getElementById('ganadorH2').innerHTML = "HA GANADO " + ganador;
+    document.getElementById("unirseMenu").style = 'display:none';
+    document.getElementById("crearMenu").style = 'display:none';
+
+    setTimeout(() => { seleccion(); }, 1000);
+}
+
+
 function rellenarTablero(arrayGame){
     //console.log(arrayGame);
     for(var key in arrayGame){
         if(arrayGame[key] != "" ){
             document.getElementById(key).innerHTML = '<img src="' + arrayGame[key] + '.png">';
+        }else{
+            document.getElementById(key).innerHTML = ''; 
         }
     }
+    comprobarFinPartida(arrayGame);
 }
 
 function alertaError(mensaje){
@@ -155,6 +188,7 @@ function turno(turnoJugada){
         document.getElementById("Turno").textContent = "TU TURNO";
     }else if(turnoJugada == ""){
         document.getElementById("Turno").style = 'background-color: orange';
+        document.getElementById("Turno").textContent = "INICIA EL MAS RAPIDO !";
     }else{
         document.getElementById("Turno").style = 'background-color: red';
         document.getElementById("Turno").textContent = "TURNO DEL ENEMIGO";
