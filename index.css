@@ -9,10 +9,15 @@ img{
     flex-direction: row;
 }
 
-#mensajes{
+#mensajes, #unirseError{
     color: red;
     
 }
+
+#unirseError{
+    display: none;
+}
+
 .tablero{
     background-color: rgb(255, 255, 255);
     width: 40vw;

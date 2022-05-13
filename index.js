@@ -22,6 +22,7 @@ function obtener_valores(){
 }
 
 function unirsePartidaMenu(){
+    document.getElementById("info").style = 'display:block';
     document.getElementById("primerMenu").style = 'display:none';
     document.getElementById("unirseMenu").style = 'display:block';
 
@@ -31,12 +32,17 @@ function unirsePartidaMenu(){
 }
 
 function unirsePartida(){
-    console.log("FDFFF");
-    document.getElementById("info").style = 'diplay:none';
+    
+
     nombrePartida = document.getElementById("partida").value;
-    jugador ="O";
-    intervalID = setInterval(infoPartida,500);
-    generarEscuchas();
+    infoPartida();
+    
+        document.getElementById("info").style = 'diplay:none';
+        jugador ="O";
+        intervalID = setInterval(infoPartida,500);
+        generarEscuchas();
+    
+    
 }
 
 function crearPartidaMenu(){
@@ -107,9 +113,15 @@ function infoPartida(){
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var jsonResponse = JSON.parse(this.responseText);
-                turnoJugador = jsonResponse.player;
-                rellenarTablero(jsonResponse.gameInfo);
+                if(jsonResponse.status == "KO"){
+                    document.getElementById('unirseError').style = "display:block";
+                    clearInterval(intervalID);
+                    unirsePartidaMenu();
+                }else{
+                    rellenarTablero(jsonResponse.gameInfo);
                 turno(jsonResponse.player);
+                }
+                
             }
         };
         xhttp.open("POST", "https://tictactoe.codifi.cat/", true);
